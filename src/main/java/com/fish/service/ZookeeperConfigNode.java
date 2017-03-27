@@ -120,9 +120,12 @@ public class ZookeeperConfigNode {
     private Node loadData(final String nodePath) throws  Exception {
         byte[] data = curator.getData().forPath(nodePath);
 
-        String value = new String(data, "utf-8");
 
         Node node = new Node();
+        String value = "";
+        if (null != data) {
+            value = new String(data, "utf-8");
+        }
         node.setValue(value);
         node.setNodeName(nodePath);
         node.setName(nodePath.substring(nodePath.lastIndexOf("/") + 1));

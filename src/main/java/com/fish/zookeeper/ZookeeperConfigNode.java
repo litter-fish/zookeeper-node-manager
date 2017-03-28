@@ -141,7 +141,10 @@ public class ZookeeperConfigNode extends GeneralConfigGroup {
         }
         if (null == node) {
             byte[] data = curator.getData().watched().forPath(nodePath);
-            String value = new String(data, "utf-8");
+            String value = "";
+            if (null != data) {
+                value = new String(data, "utf-8");
+            }
             node = new Node();
             node.setValue(value);
             node.setNodeName(nodePath);

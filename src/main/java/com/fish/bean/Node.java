@@ -41,6 +41,52 @@ public class Node  implements Serializable {
     private long pzxid;
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Node node = (Node) o;
+
+        if (czxid != node.czxid) return false;
+        if (mzxid != node.mzxid) return false;
+        if (ctime != node.ctime) return false;
+        if (mtime != node.mtime) return false;
+        if (version != node.version) return false;
+        if (cversion != node.cversion) return false;
+        if (aversion != node.aversion) return false;
+        if (ephemeralOwner != node.ephemeralOwner) return false;
+        if (dataLength != node.dataLength) return false;
+        if (numChildren != node.numChildren) return false;
+        if (pzxid != node.pzxid) return false;
+        if (nodeName != null ? !nodeName.equals(node.nodeName) : node.nodeName != null) return false;
+        if (name != null ? !name.equals(node.name) : node.name != null) return false;
+        if (value != null ? !value.equals(node.value) : node.value != null) return false;
+        return parentNodeName != null ? parentNodeName.equals(node.parentNodeName) : node.parentNodeName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (nodeName != null ? nodeName.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (parentNodeName != null ? parentNodeName.hashCode() : 0);
+        result = 31 * result + (int) (czxid ^ (czxid >>> 32));
+        result = 31 * result + (int) (mzxid ^ (mzxid >>> 32));
+        result = 31 * result + (int) (ctime ^ (ctime >>> 32));
+        result = 31 * result + (int) (mtime ^ (mtime >>> 32));
+        result = 31 * result + version;
+        result = 31 * result + cversion;
+        result = 31 * result + aversion;
+        result = 31 * result + (int) (ephemeralOwner ^ (ephemeralOwner >>> 32));
+        result = 31 * result + dataLength;
+        result = 31 * result + numChildren;
+        result = 31 * result + (int) (pzxid ^ (pzxid >>> 32));
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Node{" +
                 "nodeName='" + nodeName + '\'' +

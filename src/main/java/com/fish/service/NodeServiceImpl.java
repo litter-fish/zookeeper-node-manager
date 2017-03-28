@@ -96,6 +96,10 @@ public class NodeServiceImpl implements INodeService {
     }
 
 
+    /**
+     * 数据加密
+     * @param nodeBean
+     */
     private static void decriptData(AddNodeBean nodeBean) {
 
         String encryptType = nodeBean.getEncryptType();
@@ -105,7 +109,7 @@ public class NodeServiceImpl implements INodeService {
 
         switch (encryptType) {
             case "sha1" : nodeBean.setNodeData(DecriptUtil.sha1(nodeBean.getNodeData())); break;
-            case  "md5" : nodeBean.setNodeData(DecriptUtil.md5(nodeBean.getNodeData())); break;
+            case "md5" : nodeBean.setNodeData(DecriptUtil.md5(nodeBean.getNodeData())); break;
             default : break;
         }
 

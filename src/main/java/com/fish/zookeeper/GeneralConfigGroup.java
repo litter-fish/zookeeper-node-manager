@@ -60,6 +60,7 @@ public class GeneralConfigGroup extends ConcurrentHashMap<String, Node> implemen
                 removeKeys.removeAll(newKeys);
                 for (String redundance : removeKeys) {
                     super.remove(redundance);
+                    LOGGER.debug("remove node [{}]", redundance);
                 }
 
             }
@@ -67,6 +68,7 @@ public class GeneralConfigGroup extends ConcurrentHashMap<String, Node> implemen
             // update 存储键值对
             for (Map.Entry<? extends String, ? extends Node> entry : configs.entrySet()) {
                 this.put(entry.getKey(), entry.getValue());
+                LOGGER.debug("add node info [{}]", entry.getValue());
             }
 
         } else {

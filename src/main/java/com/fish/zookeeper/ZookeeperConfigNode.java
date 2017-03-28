@@ -42,6 +42,7 @@ public class ZookeeperConfigNode extends GeneralConfigGroup {
     public ZookeeperConfigNode() {
         super(null);
         zookeeperConfigProfile = SpringContextHolder.getBean("zookeeperConfigProfile");
+        LOGGER.debug("load zookeeper config profile : [{}]", zookeeperConfigProfile.getConnectStr());
         try {
             initConfigs();
         } catch (Exception e) {
@@ -78,6 +79,7 @@ public class ZookeeperConfigNode extends GeneralConfigGroup {
             rootNode.setNodeName(ROOT_NODE);
             rootNode.setParentNodeName("0");
             this.put("/", rootNode);
+            LOGGER.debug("load root node info [{}]", rootNode);
         }
 
 
@@ -95,7 +97,7 @@ public class ZookeeperConfigNode extends GeneralConfigGroup {
 
                 this.put(path, node);
                 configs.put(path, node);
-
+                LOGGER.debug("load node info [{}]", node);
                 loadAll(path);
             }
         }
@@ -123,11 +125,14 @@ public class ZookeeperConfigNode extends GeneralConfigGroup {
             cleanAndputAddNode(configs);
 
         }
-
-        //this.clearNode(configs);
     }
 
-
+    /**
+     * 加载节点数据信息
+     * @param nodePath
+     * @return
+     * @throws Exception
+     */
     private Node loadData(final String nodePath) throws  Exception {
         return createNode(null, nodePath);
     }

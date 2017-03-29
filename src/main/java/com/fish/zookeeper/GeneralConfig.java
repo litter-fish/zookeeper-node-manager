@@ -87,12 +87,6 @@ public class GeneralConfig extends ConcurrentHashMap<String, Node> implements Co
         return preValue;
     }
 
-
-    @Override
-    public Node remove(Object key) {
-        throw new UnsupportedOperationException();
-    }
-
     @Override
     public void clear() {
         throw new UnsupportedOperationException();

@@ -38,6 +38,12 @@ public class ConfigNodeEventListener implements CuratorListener {
                     case NodeChildrenChanged:// 目录节点变化
                         configNode.loadNode(watchedEvent.getPath());
                         break;
+                    /*case NodeCreated :
+                        configNode.createNode(watchedEvent.getPath());
+                        break;
+                    case NodeDeleted :
+                        configNode.cleanNode(watchedEvent.getPath());
+                        break;*/
                     case NodeDataChanged: // 数据节点变化
                         configNode.reloadKey(watchedEvent.getPath());
                         break;

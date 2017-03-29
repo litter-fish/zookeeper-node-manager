@@ -3,8 +3,11 @@ package com.fish.zookeeper;
 import com.fish.bean.Node;
 import com.fish.util.ClassUtil;
 import com.fish.util.SpringContextHolder;
+import com.google.common.base.Predicate;
 import com.google.common.base.Throwables;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.CuratorListener;
@@ -138,6 +141,11 @@ public class ZookeeperConfigNode extends GeneralConfig {
         return createNode(null, nodePath);
     }
 
+    protected  Node createNode(final String nodePath) throws Exception {
+
+        return createNode(null, nodePath);
+    }
+
     private Node createNode(Node node, final String nodePath) throws Exception {
         Stat stat = null;
         try {
@@ -163,6 +171,22 @@ public class ZookeeperConfigNode extends GeneralConfig {
         return node;
     }
 
+
+    protected void cleanNode(final String nodePath) {
+
+        // 过滤出已经删除的数据
+        final Iterable<String> redundances = Iterables.filter(Sets.newHashSet(this.keySet()), new Predicate<String>() {
+
+            @Override
+            public boolean apply(String input) {
+                return !input.startsWith(nodePath);
+            }
+        });
+        for (String redundance : redundances) {
+            super.remove(redundance);
+        }
+
+    }
 
     /**
      * 创建节点

@@ -40,6 +40,10 @@ public class ZookeeperConfigProfile {
 	@Setter
 	private final String connectStr;
 
+	@Getter
+	@Setter
+	private final String node;
+
 	/**
 	 * 重试策略
 	 */
@@ -48,8 +52,9 @@ public class ZookeeperConfigProfile {
 	private final RetryPolicy retryPolicy;
 
 
-	public ZookeeperConfigProfile(final String connectStr) {
+	public ZookeeperConfigProfile(final String connectStr, final String node) {
 		this.connectStr = Preconditions.checkNotNull(connectStr);
+		this.node = Preconditions.checkNotNull(node);
 		this.retryPolicy = DEFAULT_RETRY_POLICY;
 	}
 

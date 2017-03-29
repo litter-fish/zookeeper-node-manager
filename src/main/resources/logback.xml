@@ -18,7 +18,7 @@
         <Encoding>UTF-8</Encoding>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${LOG_HOME}/logs/omweb.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${LOG_HOME}/logs/zk-node-manager.%d{yyyy-MM-dd}.log</FileNamePattern>
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -43,11 +43,11 @@
     <logger name="org.apache" level="INFO" />
     <logger name="com.atomikos" level="INFO" />
 
-    <logger name="com.hk" level="DEBUG" />
+    <logger name="com.fish" level="DEBUG" />
 
     <!-- 日志输出级别 -->
     <root level="DEBUG">
         <appender-ref ref="FILE" />
-        <!--<appender-ref ref="STDOUT" />-->
+        <appender-ref ref="STDOUT" />
     </root>
 </configuration>

@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by yudin on 2017/3/26.
  */
 @Service("zookeeperNodeData")
-public class ZookeeperConfigNode extends GeneralConfigGroup {
+public class ZookeeperConfigNode extends GeneralConfig {
 
 
 
@@ -37,12 +37,13 @@ public class ZookeeperConfigNode extends GeneralConfigGroup {
     private CuratorListener listener = new ConfigNodeEventListener(this);
 
 
-    private final static String ROOT_NODE = "/";
+    private final String ROOT_NODE;
 
     public ZookeeperConfigNode() {
         super(null);
         zookeeperConfigProfile = SpringContextHolder.getBean("zookeeperConfigProfile");
-        LOGGER.debug("load zookeeper config profile : [{}]", zookeeperConfigProfile.getConnectStr());
+        LOGGER.debug("load zookeeper config profile , address:[{}],node[{}]", zookeeperConfigProfile.getConnectStr(), zookeeperConfigProfile.getNode());
+        ROOT_NODE = zookeeperConfigProfile.getNode();
         try {
             initConfigs();
         } catch (Exception e) {
@@ -73,15 +74,7 @@ public class ZookeeperConfigNode extends GeneralConfigGroup {
             return ;
         }
 
-        if (nodePath.equals(ROOT_NODE)) {
-            Node rootNode = this.loadData(nodePath);
-            rootNode.setName(ROOT_NODE);
-            rootNode.setNodeName(ROOT_NODE);
-            rootNode.setParentNodeName("0");
-            this.put("/", rootNode);
-            LOGGER.debug("load root node info [{}]", rootNode);
-        }
-
+        if (nodePath.equals(ROOT_NODE)) createRootNode(nodePath);
 
         List<String> children = curator.getChildren().watched().forPath(nodePath);
         if (children != null) {
@@ -103,6 +96,14 @@ public class ZookeeperConfigNode extends GeneralConfigGroup {
         }
     }
 
+    private void createRootNode(String nodePath) throws Exception {
+        Node rootNode = this.loadData(nodePath);
+        rootNode.setName(ROOT_NODE);
+        rootNode.setNodeName(ROOT_NODE);
+        rootNode.setParentNodeName("0");
+        this.put(ROOT_NODE, rootNode);
+        LOGGER.debug("load root node info [{}]", rootNode);
+    }
 
     /**
      * 加载节点并监听节点变化

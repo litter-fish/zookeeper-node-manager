@@ -13,17 +13,17 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by yudin on 2017/3/27.
  */
-public class GeneralConfigGroup extends ConcurrentHashMap<String, Node> implements ConfigGroup {
+public class GeneralConfig extends ConcurrentHashMap<String, Node> implements Config {
 
     private static final long serialVersionUID = 1L;
 
-    private ConfigGroup internalConfigGroup;
+    private Config internalConfigGroup;
 
-    protected GeneralConfigGroup(ConfigGroup internalConfigGroup) {
+    protected GeneralConfig(Config internalConfigGroup) {
         this.internalConfigGroup = internalConfigGroup;
     }
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GeneralConfigGroup.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeneralConfig.class);
 
     @Override
     public final Node get(String key) {

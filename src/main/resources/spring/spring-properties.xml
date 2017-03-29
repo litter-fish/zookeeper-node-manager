@@ -21,7 +21,8 @@
 
 
     <bean name="zookeeperConfigProfile" class="com.fish.zookeeper.ZookeeperConfigProfile">
-        <constructor-arg value="${connectStr}" />
+        <constructor-arg value="${zk.configs.address}" />
+        <constructor-arg value="${zk.configs.node}" />
     </bean>
 
 </beans>

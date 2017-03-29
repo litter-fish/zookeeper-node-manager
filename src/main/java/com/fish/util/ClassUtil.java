@@ -1,14 +1,3 @@
-/**  
- * ---------------------------------------------------------------------------
- * Copyright (c) 2016, 深圳市华康全景信息技术有限公司- All Rights Reserved.
- * Project Name:ma-common  
- * File Name:ClassUtil.java  
- * Package Name:com.hk.ma.common.util
- * Author   luolong
- * Date:2016年7月26日上午11:03:18
- * ---------------------------------------------------------------------------  
-*/  
-  
 package com.fish.util;
 
 import com.alibaba.fastjson.JSON;

@@ -1,14 +1,3 @@
-/**  
- * ---------------------------------------------------------------------------
- * Copyright (c) 2016, 深圳市华康全景信息技术有限公司- All Rights Reserved.
- * Project Name:ma-common  
- * File Name:Alias.java  
- * Package Name:com.hk.ma.common.annotation
- * Author   luolong
- * Date:2016年7月27日上午10:34:31
- * ---------------------------------------------------------------------------  
-*/  
-  
 package com.fish.annotation;
 
 import java.lang.annotation.ElementType;

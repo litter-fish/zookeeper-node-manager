@@ -44,6 +44,7 @@
                     <input class="btn btn-default" type="button" value="add" id="add">
                     <input class="btn btn-default" type="button" value="modify" id="modify">
                     <input class="btn btn-default" type="button" value="delete" id="delete">
+                    <input class="btn btn-default" type="button" value="upload" id="upload">
                 </div>
             </div>
         </div>
@@ -77,6 +78,15 @@
 
     function zTreeOnClick(event, treeId, treeNode) {
 
+
+
+
+
+
+
+
+
+
         $("#dataContent").empty();
 
         if (treeNode.nodeName == 'null') return false;
@@ -101,22 +111,22 @@
         $("#dataContent").append(content);
         $("#dataBtn").attr("nodeName", treeNode.nodeName);
         $("#dataBtn").show();
-        if (treeNode.numChildren > 0) {
+        /*if (treeNode.numChildren > 0) {
             $("#delete").hide();
         } else {
             $("#delete").show();
-        }
+        }*/
 
     }
 
     $(document).on("click", "#add", function () {
         var nodeName = $(this).parent().attr("nodeName");
 
-        var content = "<form class=\"form-horizontal\">" +
+        var content = "<form>" +
             "<div class='form-group'><label for='Node Name' class='col-sm-2 control-label'>NodeName</label>" +
-            "<div class=\"col-sm-10\"><input type=\"type\" class=\"form-control\" id=\"nodeName\" placeholder=\"NodeName\"></div></div>"+
+            "<div class=\"col-sm-10\"><input type=\"type\" class=\"form-control\" id=\"nodeName\" placeholder=\"NodeName\"></div></div><br />"+
             "<div class='form-group'><label for='Node Data' class='col-sm-2 control-label'>NodeData</label>" +
-            "<div class=\"col-sm-10\"><input type=\"type\" class=\"form-control\" id=\"nodeData\" placeholder=\"NodeData\"></div></div>"+
+            "<div class=\"col-sm-10\"><input type=\"type\" class=\"form-control\" id=\"nodeData\" placeholder=\"NodeData\"></div></div><br />"+
             "<div class='form-group'><label for='Node Name' class='col-sm-2 control-label'>encryptType</label>" +
             "<div class=\"col-sm-10\">"+
             "<select class=\"form-control\" id=\"encryptType\" name=\"encryptType\">" +
@@ -169,11 +179,11 @@
 
         ajaxBody("/Zookeeper-manager-web/base/getData", reqParam, function (resData) {
             if (resData != null) {
-                var content = "<form class=\"form-horizontal\">" +
+                var content = "<form>" +
                     "<div class='form-group'><label for='Node Name' class='col-sm-2 control-label'>NodeName</label>" +
-                    "<div class=\"col-sm-10\"><input type=\"type\" class=\"form-control\" id=\"nodeName\" placeholder=\"NodeName\" readonly=\"readonly\" value=" + nodeName + "></div></div>"+
+                    "<div class=\"col-sm-10\"><input type=\"type\" class=\"form-control\" id=\"nodeName\" placeholder=\"NodeName\" readonly=\"readonly\" value=" + nodeName + "></div></div><br />"+
                     "<div class='form-group'><label for='Node Data' class='col-sm-2 control-label'>NodeData</label>" +
-                    "<div class=\"col-sm-10\"><input type=\"type\" class=\"form-control\" id=\"nodeData\" placeholder=\"NodeData\" value=" + resData + "></div></div>"+
+                    "<div class=\"col-sm-10\"><input type=\"type\" class=\"form-control\" id=\"nodeData\" placeholder=\"NodeData\" value=" + resData + "></div></div><br />"+
                     "<div class='form-group'><label for='Node Name' class='col-sm-2 control-label'>encryptType</label>" +
                     "<div class=\"col-sm-10\">"+
                     "<select class=\"form-control\" id=\"encryptType\" name=\"encryptType\">" +
@@ -206,6 +216,31 @@
             }
         });
     });
+
+
+
+    $(document).on("click", "#upload", function () {
+        var nodeName = $(this).parent().attr("nodeName");
+
+        var content = "<form method=\"post\" action=\"/Zookeeper-manager-web/uploadController/upload\" enctype=\"multipart/form-data\">" +
+                "<div class=\"form-group\">" +
+                "<label for=\"exampleInputFile\">File input</label>" +
+                "<input type=\"file\" id=\"file\" name=\"file\">" +
+                "<p class=\"help-block\">Example block-level help text here.</p>" +
+                "</div>" +
+                "<input type=hidden value=" + nodeName + " id=\"nodeName\" name=\"nodeName\">" +
+                "<button type=\"submit\" class=\"btn btn-default\">Submit</button>" +
+                "</form>";
+
+        //页面层
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['600px', '400px'], //宽高
+            content: content
+        });
+    });
+
 
     function ajaxBody(url, reqParam, callback) {
         $.ajax({

@@ -10,9 +10,7 @@ import org.apache.zookeeper.CreateMode;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yudin on 2017/3/26.
@@ -30,7 +28,7 @@ public class NodeServiceImpl implements INodeService {
         List<Node> nodes = Lists.newArrayList();
         if (null != nodeMap) {
 
-            Collection<Node> node = nodeMap.values();
+            Collection<Node> node = zookeeperConfigNode.values();
             nodes.addAll(node);
 
             return nodes;

@@ -39,7 +39,6 @@ public class ZookeeperConfigNode extends GeneralConfig {
 
     private CuratorListener listener = new ConfigNodeEventListener(this);
 
-
     private final String ROOT_NODE;
 
     public ZookeeperConfigNode() {
@@ -116,6 +115,7 @@ public class ZookeeperConfigNode extends GeneralConfig {
             LOGGER.debug("path [{}] is not exists,return null", nodePath);
             return ;
         }
+        LOGGER.debug("load node path:[{}]", nodePath);
         List<String> children = curator.getChildren().watched().forPath(nodePath);
         if (children != null) {
             Map<String, Node> configs = Maps.newHashMap();
@@ -141,7 +141,7 @@ public class ZookeeperConfigNode extends GeneralConfig {
         return createNode(null, nodePath);
     }
 
-    protected  Node createNode(final String nodePath) throws Exception {
+    public Node createNode(final String nodePath) throws Exception {
 
         return createNode(null, nodePath);
     }

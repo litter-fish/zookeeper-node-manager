@@ -8,6 +8,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.CuratorListener;
@@ -110,7 +111,7 @@ public class ZookeeperConfigNode extends GeneralConfig {
     /**
      * 加载节点并监听节点变化
      */
-    void loadNode(final String nodePath) throws Exception {
+    void loadNode(final String nodePath, Map<String, Node> configs) throws Exception {
         if (curator.checkExists().forPath(nodePath) == null) {
             LOGGER.debug("path [{}] is not exists,return null", nodePath);
             return ;
@@ -118,15 +119,13 @@ public class ZookeeperConfigNode extends GeneralConfig {
         LOGGER.debug("load node path:[{}]", nodePath);
         List<String> children = curator.getChildren().watched().forPath(nodePath);
         if (children != null) {
-            Map<String, Node> configs = Maps.newHashMap();
 
             for (String child : children) {
                 String path = nodePath + "/" + child;
                 Node node = loadData(path);
                 configs.put(path, node);
+                loadNode(path, configs);
             }
-
-            cleanAndputAddNode(configs);
 
         }
     }
@@ -232,11 +231,23 @@ public class ZookeeperConfigNode extends GeneralConfig {
 
     /**
      * 删除节点
-     * @param path
+     * @param nodePath
      */
-    public void deleteNode(String path) {
+    public void deleteNode(String nodePath) {
         try {
-            curator.delete().forPath(path);
+
+            List<String> children = curator.getChildren().watched().forPath(nodePath);
+            if (CollectionUtils.isNotEmpty(children)) {
+                for (String child : children) {
+                    String path = nodePath + "/" + child;
+                    deleteNode(path);
+                }
+            } else {
+                curator.delete().forPath(nodePath);
+                Thread.sleep(5);
+                this.remove(nodePath);
+                LOGGER.debug("rmr node :[{}]", nodePath);
+            }
         } catch (Exception e) {
             System.out.println("删除节点失败, elog=" + e.getMessage());
         }

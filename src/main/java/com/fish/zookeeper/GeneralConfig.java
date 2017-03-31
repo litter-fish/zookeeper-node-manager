@@ -1,7 +1,10 @@
 package com.fish.zookeeper;
 
 import com.fish.bean.Node;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +42,7 @@ public class GeneralConfig extends ConcurrentHashMap<String, Node> implements Co
         return get(key.toString());
     }
 
-    public final void cleanAndputAddNode(Map<? extends String, ? extends Node> configs) {
+    public final void cleanAndputAddNode(final String nodePath, Map<? extends String, ? extends Node> configs) {
 
         if (configs != null && configs.size() > 0) {
             // clear
@@ -47,28 +50,35 @@ public class GeneralConfig extends ConcurrentHashMap<String, Node> implements Co
                 final Set<String> newKeys = Sets.newHashSet();
                 final Set<String> removeKeys = Sets.newHashSet();
                 newKeys.addAll(configs.keySet());
-                for (String redundance : newKeys) {
 
-                    redundance = redundance.substring(0, redundance.lastIndexOf("/") + 1);
-                    for (String oldKey : this.keySet()) {
-                        if (oldKey.startsWith(redundance)) {
-                            removeKeys.add(oldKey);
-                        }
+                // 过滤出已经删除的数据
+                final Iterable<String> redundances = Iterables.filter(Sets.newHashSet(this.keySet()), new Predicate<String>() {
 
+                    @Override
+                    public boolean apply(String input) {
+                        return !newKeys.contains(input) && input.startsWith(nodePath);
                     }
+                });
+
+                for (String redundance : redundances) {
+                    removeKeys.add(redundance);
                 }
+
                 removeKeys.removeAll(newKeys);
-                for (String redundance : removeKeys) {
-                    super.remove(redundance);
-                    LOGGER.debug("remove node [{}]", redundance);
+                if (CollectionUtils.isNotEmpty(removeKeys)) {
+                    for (String key : removeKeys) this.remove(key);
                 }
+
+                System.out.println();
+
+
 
             }
 
             // update 存储键值对
             for (Map.Entry<? extends String, ? extends Node> entry : configs.entrySet()) {
+                LOGGER.debug("add node info [{}]", entry.getKey());
                 this.put(entry.getKey(), entry.getValue());
-                LOGGER.debug("add node info [{}]", entry.getValue());
             }
 
         } else {

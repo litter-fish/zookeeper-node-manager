@@ -32,7 +32,7 @@ public class UploadController {
 	private ZookeeperConfigNode zookeeperConfigNode;
 
 	/**
-	 * 上传图片
+	 * 上传
 
 	 * @param request
 	 * @param response

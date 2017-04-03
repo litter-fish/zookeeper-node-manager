@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
+ * zookeeper节点监听器
  * Created by yudin on 2017/3/27.
  */
 public class ConfigNodeEventListener implements CuratorListener {

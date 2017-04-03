@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.*;
 
 /**
- * Created by yudin on 2017/3/26.
+ * Created by yudingm on 2017/3/26.
  */
 @Service
 public class NodeServiceImpl implements INodeService {
@@ -34,15 +34,12 @@ public class NodeServiceImpl implements INodeService {
             return nodes;
 
         }
-
-
-
         return null;
     }
 
     @Override
     public boolean insert(AddNodeBean nodeBean) {
-
+        // 根据加密规则调用相应的加密方式进行值加密
         decriptData(nodeBean);
 
         try {
@@ -68,6 +65,7 @@ public class NodeServiceImpl implements INodeService {
 
     @Override
     public boolean modify(AddNodeBean nodeBean) {
+        // 根据加密规则调用相应的加密方式进行值加密
         decriptData(nodeBean);
         try {
             zookeeperConfigNode.updateNodeDate(nodeBean.getNodeName(), nodeBean.getNodeData());
@@ -85,11 +83,6 @@ public class NodeServiceImpl implements INodeService {
             return nodeMap.get(nodeName).getValue();
         }
 
-       /* try {
-            return zookeeperConfigNode.getData(nodeName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
         return null;
     }
 

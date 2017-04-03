@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by yudingming on 2016/12/16.
+ * Created by yudingm on 2016/12/16.
  */
 public abstract class AbstractUpload {
 

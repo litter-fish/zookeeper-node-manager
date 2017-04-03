@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 /**
+ * 加密处理工具类
  * Created by yudin on 2017/3/26.
  */
 public class DecriptUtil {
@@ -20,21 +21,26 @@ public class DecriptUtil {
             digest.update(decript.getBytes());
             byte messageDigest[] = digest.digest();
             // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            // 字节数组转换为 十六进制 数
-            for (int i = 0; i < messageDigest.length; i++) {
-                String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
-                if (shaHex.length() < 2) {
-                    hexString.append(0);
-                }
-                hexString.append(shaHex);
-            }
+            StringBuffer hexString = genHexString(messageDigest);
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private static StringBuffer genHexString(byte[] messageDigest) {
+        StringBuffer hexString = new StringBuffer();
+        // 字节数组转换为 十六进制 数
+        for (int i = 0; i < messageDigest.length; i++) {
+            String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
+            if (shaHex.length() < 2) {
+                hexString.append(0);
+            }
+            hexString.append(shaHex);
+        }
+        return hexString;
     }
 
     public static String sha(String decript) {
@@ -44,15 +50,7 @@ public class DecriptUtil {
             digest.update(decript.getBytes());
             byte messageDigest[] = digest.digest();
             // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            // 字节数组转换为 十六进制 数
-            for (int i = 0; i < messageDigest.length; i++) {
-                String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
-                if (shaHex.length() < 2) {
-                    hexString.append(0);
-                }
-                hexString.append(shaHex);
-            }
+            StringBuffer hexString = genHexString(messageDigest);
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
@@ -70,15 +68,7 @@ public class DecriptUtil {
             // 获得密文
             byte[] md = mdInst.digest();
             // 把密文转换成十六进制的字符串形式
-            StringBuffer hexString = new StringBuffer();
-            // 字节数组转换为 十六进制 数
-            for (int i = 0; i < md.length; i++) {
-                String shaHex = Integer.toHexString(md[i] & 0xFF);
-                if (shaHex.length() < 2) {
-                    hexString.append(0);
-                }
-                hexString.append(shaHex);
-            }
+            StringBuffer hexString = genHexString(md);
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

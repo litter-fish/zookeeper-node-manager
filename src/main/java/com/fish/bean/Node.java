@@ -1,5 +1,6 @@
 package com.fish.bean;
 
+import com.fish.annotation.Type;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,9 +23,11 @@ public class Node  implements Serializable {
 
     private long mzxid;
 
-    private long ctime;
+    @Type(value="true", format = "yyyy-MM-dd HH:mm:ss")
+    private String ctime;
 
-    private long mtime;
+    @Type(value="true", format = "yyyy-MM-dd HH:mm:ss")
+    private String mtime;
 
     private int version;
 
@@ -50,8 +53,6 @@ public class Node  implements Serializable {
 
         if (czxid != node.czxid) return false;
         if (mzxid != node.mzxid) return false;
-        if (ctime != node.ctime) return false;
-        if (mtime != node.mtime) return false;
         if (version != node.version) return false;
         if (cversion != node.cversion) return false;
         if (aversion != node.aversion) return false;
@@ -62,7 +63,10 @@ public class Node  implements Serializable {
         if (nodeName != null ? !nodeName.equals(node.nodeName) : node.nodeName != null) return false;
         if (name != null ? !name.equals(node.name) : node.name != null) return false;
         if (value != null ? !value.equals(node.value) : node.value != null) return false;
-        return parentNodeName != null ? parentNodeName.equals(node.parentNodeName) : node.parentNodeName == null;
+        if (parentNodeName != null ? !parentNodeName.equals(node.parentNodeName) : node.parentNodeName != null)
+            return false;
+        if (ctime != null ? !ctime.equals(node.ctime) : node.ctime != null) return false;
+        return mtime != null ? mtime.equals(node.mtime) : node.mtime == null;
     }
 
     @Override
@@ -74,8 +78,8 @@ public class Node  implements Serializable {
         result = 31 * result + (parentNodeName != null ? parentNodeName.hashCode() : 0);
         result = 31 * result + (int) (czxid ^ (czxid >>> 32));
         result = 31 * result + (int) (mzxid ^ (mzxid >>> 32));
-        result = 31 * result + (int) (ctime ^ (ctime >>> 32));
-        result = 31 * result + (int) (mtime ^ (mtime >>> 32));
+        result = 31 * result + (ctime != null ? ctime.hashCode() : 0);
+        result = 31 * result + (mtime != null ? mtime.hashCode() : 0);
         result = 31 * result + version;
         result = 31 * result + cversion;
         result = 31 * result + aversion;

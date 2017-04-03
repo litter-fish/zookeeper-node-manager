@@ -3,6 +3,7 @@ package com.fish.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fish.annotation.Alias;
+import com.fish.annotation.Type;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -251,7 +253,7 @@ public class ClassUtil {
 		if(null== sourceObj || null == destObj){
 			return;
 		}
-		List<Field> fields = getAllFields(sourceObj.getClass());
+		List<Field> fields = getAllFields(destObj.getClass());
 		Object value = null;
 		for (Field field : fields) {
 			try {
@@ -269,6 +271,7 @@ public class ClassUtil {
                         }
 					}
 				}
+
 				if(!isFieldName(destObj.getClass(), filedName)){
 					continue;
 				}
@@ -276,7 +279,15 @@ public class ClassUtil {
 				if(null == value){
 					continue;
 				}
-				setObjValueByField(destObj, filedType,filedName,value);
+
+				Type type = field.getAnnotation(Type.class);
+				if (null != type) {
+					String format = type.format();
+					if(StringUtils.isEmpty(format)) format = "yyyy-MM-dd HH:mm:ss";
+					Date date = new Date(Long.parseLong(value.toString()));
+					value = new SimpleDateFormat(format).format(date);
+				}
+				setObjValueByField(destObj, filedType, filedName, value);
 			} catch (Exception e) {
 				logger.warn("字段{}不存在,e:{}",field.getName(),e);
 			}

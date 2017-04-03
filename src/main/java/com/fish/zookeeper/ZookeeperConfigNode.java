@@ -242,12 +242,11 @@ public class ZookeeperConfigNode extends GeneralConfig {
                     String path = nodePath + "/" + child;
                     deleteNode(path);
                 }
-            } else {
-                curator.delete().forPath(nodePath);
-                Thread.sleep(5);
-                this.remove(nodePath);
-                LOGGER.debug("rmr node :[{}]", nodePath);
             }
+            curator.delete().forPath(nodePath);
+            Thread.sleep(10);
+            this.remove(nodePath);
+            LOGGER.debug("rmr node :[{}]", nodePath);
         } catch (Exception e) {
             System.out.println("删除节点失败, elog=" + e.getMessage());
         }

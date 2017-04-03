@@ -26,7 +26,7 @@
 
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+    <%--<script src="//cdn.bootcss.com/jquery.form/4.2.1/jquery.form.min.js"></script>--%>
 </head>
 <body>
     <div class="container">
@@ -77,15 +77,6 @@
 
 
     function zTreeOnClick(event, treeId, treeNode) {
-
-
-
-
-
-
-
-
-
 
         $("#dataContent").empty();
 
@@ -149,7 +140,7 @@
 
                 ajaxBody("/Zookeeper-manager-web/base/insert", reqParam, function (resData) {
                     if (resData == "success") {
-                        location.reload();
+                        loadFunction('Add Node Success', 5000);
                     }
                 });
 
@@ -158,6 +149,19 @@
         });
     });
 
+    function loadFunction(msg, waitTime) {
+        var index = layer.load(2, {time: 10 * 1000}); //又换了种风格，并且设定最长等待10秒
+        setTimeout(function () {
+            layer.msg(msg, {
+                icon: 1,
+                time: 2000 //2秒关闭（如果不配置，默认是3秒）
+            }, function () {
+                //关闭
+                layer.close(index);
+                location.reload();
+            });
+        }, waitTime);
+    }
     $(document).on("click", "#delete", function () {
         var nodeName = $(this).parent().attr("nodeName");
         layer.confirm('您确定删除该节点（包括子节点）？', {
@@ -166,7 +170,7 @@
             var reqParam = {"nodeName":nodeName};
             ajaxBody("/Zookeeper-manager-web/base/delete", reqParam, function (resData) {
                 if (resData == "success") {
-                    location.reload();
+                    loadFunction('Delete Node Success', 10000);
                 }
             });
         });
@@ -206,7 +210,7 @@
 
                         ajaxBody("/Zookeeper-manager-web/base/modify", reqParam, function (resData) {
                             if (resData == "success") {
-                                location.reload();
+                                loadFunction('Modify Node Success', 5000);
                             }
                         });
 
@@ -222,14 +226,14 @@
     $(document).on("click", "#upload", function () {
         var nodeName = $(this).parent().attr("nodeName");
 
-        var content = "<form method=\"post\" action=\"/Zookeeper-manager-web/uploadController/upload\" enctype=\"multipart/form-data\">" +
+        var content = "<form method=\"post\" action=\"/Zookeeper-manager-web/uploadController/upload\" id=\"nodeDataForm\" enctype=\"multipart/form-data\">" +
                 "<div class=\"form-group\">" +
                 "<label for=\"exampleInputFile\">File input</label>" +
                 "<input type=\"file\" id=\"file\" name=\"file\">" +
                 "<p class=\"help-block\">Example block-level help text here.</p>" +
                 "</div>" +
                 "<input type=hidden value=" + nodeName + " id=\"nodeName\" name=\"nodeName\">" +
-                "<button type=\"submit\" class=\"btn btn-default\">Submit</button>" +
+                "<button type=\"submit\" class=\"btn btn-default\" id=\"uploadBtn\">Submit</button>" +
                 "</form>";
 
         //页面层
@@ -238,6 +242,11 @@
             skin: 'layui-layer-rim', //加上边框
             area: ['600px', '400px'], //宽高
             content: content
+        });
+
+
+        $(document).on("click", "#uploadBtn", function () {
+            loadFunction('upload file Success', 10000);
         });
     });
 

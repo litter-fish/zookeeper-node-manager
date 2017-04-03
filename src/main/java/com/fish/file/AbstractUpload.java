@@ -67,7 +67,7 @@ public abstract class AbstractUpload {
             }
         }
 
-        return filePath.toString();
+        return "/main";
     }
 
     /**

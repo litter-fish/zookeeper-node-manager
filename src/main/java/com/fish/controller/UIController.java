@@ -61,6 +61,12 @@ public class UIController {
 
         nodeService.insert(addNodeBean);
 
+        try {
+            Thread.sleep(30);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         System.out.println();
         return "success";
     }
@@ -75,6 +81,12 @@ public class UIController {
 
         nodeService.delete(nodeName);
 
+        try {
+            Thread.sleep(30);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         return "success";
     }
 
@@ -85,6 +97,12 @@ public class UIController {
         AddNodeBean addNodeBean = ClassUtil.toJavaObject(body, AddNodeBean.class);
 
         nodeService.modify(addNodeBean);
+
+        try {
+            Thread.sleep(30);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return "success";
     }

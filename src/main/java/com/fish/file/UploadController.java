@@ -44,7 +44,7 @@ public class UploadController {
 
 		final String nodePath = request.getParameter("nodeName");
 
-		return new AbstractUpload() {
+		String success = new AbstractUpload() {
 
 			/**
 			 * 检查文件，包括文件大小及文件扩展名
@@ -75,10 +75,12 @@ public class UploadController {
 
 					for (String content : fileContent) {
 						if (StringUtils.isNotEmpty(content)) {
+							if (content.startsWith("#")) continue;
+
 							String[] contents = content.split("=");
 
 							StringBuilder key = new StringBuilder(nodePath).append("/").append(originalFilename).append("/").append(contents[0]);
-							String value = contents[1];
+							String value = contents.length > 1 ? contents[1] : "";
 
 							createNode(key.toString(), value);
 						}
@@ -88,6 +90,17 @@ public class UploadController {
 			}
 
 		}.upload(request, response);
+
+		try {
+			Thread.sleep(5000);
+			response.sendRedirect("/Zookeeper-manager-web/base/index");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		return success;
 	}
 
 	private void createNode(String path, String data) {
@@ -109,7 +122,7 @@ public class UploadController {
 		try {
 			reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
 			String content;
-			while (StringUtils.isNotEmpty( content = reader.readLine())) {
+			while (null != ( content = reader.readLine())) {
 				fileContent.add(content);
 			}
 		} catch (Exception e) {

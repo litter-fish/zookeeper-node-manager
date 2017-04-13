@@ -3,6 +3,7 @@ package com.fish.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fish.annotation.Alias;
+import com.fish.annotation.Request;
 import com.fish.annotation.Type;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -257,6 +258,10 @@ public class ClassUtil {
 		Object value = null;
 		for (Field field : fields) {
 			try {
+
+				Request request = field.getAnnotation(Request.class);
+				if (request != null && !request.need()) continue;
+
 				String filedName = field.getName();
                 if(StringUtils.equals(filedName, isSerialVersionUID)) continue;
 

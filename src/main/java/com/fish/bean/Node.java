@@ -1,5 +1,6 @@
 package com.fish.bean;
 
+import com.fish.annotation.Request;
 import com.fish.annotation.Type;
 import lombok.Data;
 
@@ -11,12 +12,16 @@ import java.io.Serializable;
 @Data
 public class Node  implements Serializable {
 
+    @Request(need = false)
     private String nodeName;
 
+    @Request(need = false)
     private String name;
 
+    @Request(need = false)
     private String value;
 
+    @Request(need = false)
     private String parentNodeName;
 
     private long czxid;
